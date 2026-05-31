@@ -9,6 +9,7 @@ namespace gov_API.Entities.Models
         public bool IsActive { get; set; } = true;
 
         public int? GovernmentEntityId { get; set; }
+        public GovernmentEntity? GovernmentEntity { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

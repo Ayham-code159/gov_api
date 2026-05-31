@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using gov_API.Interfaces;
+using gov_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -96,6 +98,11 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+
+
+//services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IGovernmentEntityService, GovernmentEntityService>();
 
 var app = builder.Build();
 
