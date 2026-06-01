@@ -20,6 +20,8 @@ namespace gov_API.Entities.Models
 
         public double MaturityScore { get; set; }
 
+        public double ComplianceScore { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? ApprovedAt { get; set; }
