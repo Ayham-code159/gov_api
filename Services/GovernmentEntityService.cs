@@ -265,5 +265,11 @@ namespace gov_API.Services
 
             return AssessmentResultLevel.Excellent;
         }
+
+        public async Task<int> GetPendingCountAsync()
+        {
+            return await _context.GovernmentEntities
+                .CountAsync(e => e.Status == EntityStatus.Pending);
+        }
     }
 }

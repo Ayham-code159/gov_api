@@ -17,5 +17,7 @@ namespace gov_API.Interfaces
         Task<string> RejectAsync(int id);
 
         Task<string> SuspendAsync(int id);
+
+        Task<int> GetPendingCountAsync();
     }
 }

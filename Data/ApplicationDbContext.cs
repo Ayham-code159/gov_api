@@ -14,6 +14,8 @@ namespace gov_API.Data
         public DbSet<GovernmentEntity> GovernmentEntities { get; set; }
         public DbSet<AssessmentSubmission> AssessmentSubmissions { get; set; }
         public DbSet<AssessmentAnswer> AssessmentAnswers { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +31,18 @@ namespace gov_API.Data
                 .HasMany(s => s.Answers)
                 .WithOne(a => a.AssessmentSubmission)
                 .HasForeignKey(a => a.AssessmentSubmissionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Notification>()
+                .HasMany(n => n.Recipients)
+                .WithOne(r => r.Notification)
+                .HasForeignKey(r => r.NotificationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<NotificationRecipient>()
+                .HasOne(r => r.GovernmentEntity)
+                .WithMany()
+                .HasForeignKey(r => r.GovernmentEntityId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

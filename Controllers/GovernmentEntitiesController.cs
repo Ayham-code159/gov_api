@@ -103,5 +103,13 @@ namespace gov_API.Controllers
                 return NotFound(new { message = ex.Message });
             }
         }
+
+        [Authorize(Roles = "PlatformAdmin")]
+        [HttpGet("pending/count")]
+        public async Task<IActionResult> GetPendingCount()
+        {
+            var count = await _governmentEntityService.GetPendingCountAsync();
+            return Ok(new { count });
+        }
     }
 }
