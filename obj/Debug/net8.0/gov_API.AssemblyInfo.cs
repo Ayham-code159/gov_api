@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("gov_API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+43399a5953fbcaff8a2278b6310cf64d9498eefc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+be0831e758400631dc922a48296fa3c28698a30d")]
 [assembly: System.Reflection.AssemblyProductAttribute("gov_API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("gov_API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

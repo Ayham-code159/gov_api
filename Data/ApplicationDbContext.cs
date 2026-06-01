@@ -19,6 +19,8 @@ namespace gov_API.Data
         public DbSet<SupportRequest> SupportRequests { get; set; }
         public DbSet<SupportReply> SupportReplies { get; set; }
         public DbSet<Policy> Policies { get; set; }
+        public DbSet<Vulnerability> Vulnerabilities { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -58,6 +60,12 @@ namespace gov_API.Data
                 .HasOne(r => r.GovernmentEntity)
                 .WithMany()
                 .HasForeignKey(r => r.GovernmentEntityId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Vulnerability>()
+                .HasOne(v => v.GovernmentEntity)
+                .WithMany()
+                .HasForeignKey(v => v.GovernmentEntityId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
