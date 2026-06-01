@@ -2,7 +2,7 @@
 {
     public class ReadinessAnswerDto
     {
-        public int QuestionId { get; set; }
+        public string QuestionKey { get; set; } = string.Empty;
 
         public int Score { get; set; }
 

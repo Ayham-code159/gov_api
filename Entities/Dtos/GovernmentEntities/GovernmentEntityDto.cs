@@ -18,10 +18,6 @@ namespace gov_API.DTOs.GovernmentEntities
 
         public double ReadinessScore { get; set; }
 
-        public double CompliancePercentage { get; set; }
-
-        public double MaturityScore { get; set; }
-
         public DateTime CreatedAt { get; set; }
 
         public DateTime? ApprovedAt { get; set; }

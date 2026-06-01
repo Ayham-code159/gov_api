@@ -1,4 +1,4 @@
-﻿namespace gov_API.DTOs.Auth
+﻿namespace gov_API.Entities.Dtos.Auth
 {
     public class LoginDto
     {

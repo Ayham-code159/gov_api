@@ -12,7 +12,7 @@ using gov_API.Data;
 namespace gov_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260531101538_InitialMigration")]
+    [Migration("20260601122536_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -224,6 +224,8 @@ namespace gov_API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GovernmentEntityId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -232,6 +234,111 @@ namespace gov_API.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("gov_API.Entities.Models.AssessmentAnswer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssessmentSubmissionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("QuestionKey")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssessmentSubmissionId");
+
+                    b.ToTable("AssessmentAnswers");
+                });
+
+            modelBuilder.Entity("gov_API.Entities.Models.AssessmentSubmission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssessmentType")
+                        .HasColumnType("int");
+
+                    b.Property<double>("FinalScore")
+                        .HasColumnType("double");
+
+                    b.Property<int>("GovernmentEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResultLevel")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("SubmittedByUserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GovernmentEntityId");
+
+                    b.HasIndex("SubmittedByUserId");
+
+                    b.ToTable("AssessmentSubmissions");
+                });
+
+            modelBuilder.Entity("gov_API.Entities.Models.GovernmentEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<double>("ReadinessScore")
+                        .HasColumnType("double");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GovernmentEntities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -283,6 +390,58 @@ namespace gov_API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("gov_API.Entities.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("gov_API.Entities.Models.GovernmentEntity", "GovernmentEntity")
+                        .WithMany("Users")
+                        .HasForeignKey("GovernmentEntityId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("GovernmentEntity");
+                });
+
+            modelBuilder.Entity("gov_API.Entities.Models.AssessmentAnswer", b =>
+                {
+                    b.HasOne("gov_API.Entities.Models.AssessmentSubmission", "AssessmentSubmission")
+                        .WithMany("Answers")
+                        .HasForeignKey("AssessmentSubmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AssessmentSubmission");
+                });
+
+            modelBuilder.Entity("gov_API.Entities.Models.AssessmentSubmission", b =>
+                {
+                    b.HasOne("gov_API.Entities.Models.GovernmentEntity", "GovernmentEntity")
+                        .WithMany("AssessmentSubmissions")
+                        .HasForeignKey("GovernmentEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("gov_API.Entities.Models.ApplicationUser", "SubmittedByUser")
+                        .WithMany()
+                        .HasForeignKey("SubmittedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GovernmentEntity");
+
+                    b.Navigation("SubmittedByUser");
+                });
+
+            modelBuilder.Entity("gov_API.Entities.Models.AssessmentSubmission", b =>
+                {
+                    b.Navigation("Answers");
+                });
+
+            modelBuilder.Entity("gov_API.Entities.Models.GovernmentEntity", b =>
+                {
+                    b.Navigation("AssessmentSubmissions");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

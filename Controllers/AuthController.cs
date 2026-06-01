@@ -1,12 +1,13 @@
-﻿using gov_API.DTOs.Auth;
+﻿using System.Security.Claims;
+using gov_API.DTOs;
+using gov_API.Entities.Dtos.Auth;
 using gov_API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace gov_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -37,11 +38,11 @@ namespace gov_API.Controllers
         {
             return Ok(new
             {
-                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                Email = User.FindFirstValue(ClaimTypes.Email),
-                FullName = User.FindFirstValue("FullName"),
-                GovernmentEntityId = User.FindFirstValue("GovernmentEntityId"),
-                Roles = User.Claims
+                userId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                email = User.FindFirstValue(ClaimTypes.Email),
+                fullName = User.FindFirstValue("FullName"),
+                governmentEntityId = User.FindFirstValue("GovernmentEntityId"),
+                roles = User.Claims
                     .Where(c => c.Type == ClaimTypes.Role)
                     .Select(c => c.Value)
                     .ToList()

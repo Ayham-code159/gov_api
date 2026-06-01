@@ -241,13 +241,14 @@ namespace gov_API.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AssessmentQuestionId")
-                        .HasColumnType("int");
-
                     b.Property<int>("AssessmentSubmissionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Note")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("QuestionKey")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("Score")
@@ -255,62 +256,9 @@ namespace gov_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssessmentQuestionId");
-
                     b.HasIndex("AssessmentSubmissionId");
 
                     b.ToTable("AssessmentAnswers");
-                });
-
-            modelBuilder.Entity("gov_API.Entities.Models.AssessmentAxis", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("OrderNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AssessmentAxes");
-                });
-
-            modelBuilder.Entity("gov_API.Entities.Models.AssessmentQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentAxisId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AssessmentType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("QuestionText")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssessmentAxisId");
-
-                    b.ToTable("AssessmentQuestions");
                 });
 
             modelBuilder.Entity("gov_API.Entities.Models.AssessmentSubmission", b =>
@@ -364,18 +312,12 @@ namespace gov_API.Migrations
                     b.Property<DateTime?>("ApprovedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<double>("CompliancePercentage")
-                        .HasColumnType("double");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<double>("MaturityScore")
-                        .HasColumnType("double");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -387,10 +329,6 @@ namespace gov_API.Migrations
 
                     b.Property<double>("ReadinessScore")
                         .HasColumnType("double");
-
-                    b.Property<string>("SecurityStatus")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -455,45 +393,27 @@ namespace gov_API.Migrations
                 {
                     b.HasOne("gov_API.Entities.Models.GovernmentEntity", "GovernmentEntity")
                         .WithMany("Users")
-                        .HasForeignKey("GovernmentEntityId");
+                        .HasForeignKey("GovernmentEntityId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("GovernmentEntity");
                 });
 
             modelBuilder.Entity("gov_API.Entities.Models.AssessmentAnswer", b =>
                 {
-                    b.HasOne("gov_API.Entities.Models.AssessmentQuestion", "AssessmentQuestion")
-                        .WithMany()
-                        .HasForeignKey("AssessmentQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("gov_API.Entities.Models.AssessmentSubmission", "AssessmentSubmission")
                         .WithMany("Answers")
                         .HasForeignKey("AssessmentSubmissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AssessmentQuestion");
-
                     b.Navigation("AssessmentSubmission");
-                });
-
-            modelBuilder.Entity("gov_API.Entities.Models.AssessmentQuestion", b =>
-                {
-                    b.HasOne("gov_API.Entities.Models.AssessmentAxis", "AssessmentAxis")
-                        .WithMany("Questions")
-                        .HasForeignKey("AssessmentAxisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AssessmentAxis");
                 });
 
             modelBuilder.Entity("gov_API.Entities.Models.AssessmentSubmission", b =>
                 {
                     b.HasOne("gov_API.Entities.Models.GovernmentEntity", "GovernmentEntity")
-                        .WithMany()
+                        .WithMany("AssessmentSubmissions")
                         .HasForeignKey("GovernmentEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -509,11 +429,6 @@ namespace gov_API.Migrations
                     b.Navigation("SubmittedByUser");
                 });
 
-            modelBuilder.Entity("gov_API.Entities.Models.AssessmentAxis", b =>
-                {
-                    b.Navigation("Questions");
-                });
-
             modelBuilder.Entity("gov_API.Entities.Models.AssessmentSubmission", b =>
                 {
                     b.Navigation("Answers");
@@ -521,6 +436,8 @@ namespace gov_API.Migrations
 
             modelBuilder.Entity("gov_API.Entities.Models.GovernmentEntity", b =>
                 {
+                    b.Navigation("AssessmentSubmissions");
+
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

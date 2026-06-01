@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using gov_API.Interfaces;
 using gov_API.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -103,6 +104,7 @@ builder.Services.AddAuthorization();
 //services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGovernmentEntityService, GovernmentEntityService>();
+builder.Services.AddScoped<IReadinessService, ReadinessService>();
 
 var app = builder.Build();
 

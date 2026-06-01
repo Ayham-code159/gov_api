@@ -1,4 +1,4 @@
-﻿using gov_API.DTOs.Auth;
+﻿using gov_API.Entities.Dtos.Auth;
 
 namespace gov_API.Interfaces
 {

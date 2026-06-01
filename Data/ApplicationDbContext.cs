@@ -12,9 +12,24 @@ namespace gov_API.Data
         }
 
         public DbSet<GovernmentEntity> GovernmentEntities { get; set; }
-        public DbSet<AssessmentAxis> AssessmentAxes { get; set; }
-        public DbSet<AssessmentQuestion> AssessmentQuestions { get; set; }
         public DbSet<AssessmentSubmission> AssessmentSubmissions { get; set; }
         public DbSet<AssessmentAnswer> AssessmentAnswers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<GovernmentEntity>()
+                .HasMany(e => e.Users)
+                .WithOne(u => u.GovernmentEntity)
+                .HasForeignKey(u => u.GovernmentEntityId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<AssessmentSubmission>()
+                .HasMany(s => s.Answers)
+                .WithOne(a => a.AssessmentSubmission)
+                .HasForeignKey(a => a.AssessmentSubmissionId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

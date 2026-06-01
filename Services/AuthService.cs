@@ -1,10 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using gov_API.DTOs.Auth;
+using gov_API.DTOs;
+using gov_API.Entities.Dtos.Auth;
+using gov_API.Entities.Models;
 using gov_API.Enums;
 using gov_API.Interfaces;
-using gov_API.Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -33,9 +34,9 @@ namespace gov_API.Services
             if (user == null)
                 throw new UnauthorizedAccessException("Invalid email or password.");
 
-            var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
 
-            if (!passwordValid)
+            if (!isPasswordValid)
                 throw new UnauthorizedAccessException("Invalid email or password.");
 
             if (!user.IsActive)
@@ -46,10 +47,10 @@ namespace gov_API.Services
             if (roles.Contains("EntityAdmin") || roles.Contains("EntityUser"))
             {
                 if (user.GovernmentEntity == null)
-                    throw new UnauthorizedAccessException("This user is not linked to a government entity.");
+                    throw new UnauthorizedAccessException("User is not linked to a government entity.");
 
                 if (user.GovernmentEntity.Status != EntityStatus.Approved)
-                    throw new UnauthorizedAccessException("Your government entity is not approved.");
+                    throw new UnauthorizedAccessException("Government entity is not approved.");
             }
 
             var token = GenerateJwtToken(user, roles.ToList());
