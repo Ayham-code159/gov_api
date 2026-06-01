@@ -105,6 +105,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGovernmentEntityService, GovernmentEntityService>();
 builder.Services.AddScoped<IReadinessService, ReadinessService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 
