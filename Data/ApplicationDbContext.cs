@@ -18,6 +18,7 @@ namespace gov_API.Data
         public DbSet<NotificationRecipient> NotificationRecipients { get; set; }
         public DbSet<SupportRequest> SupportRequests { get; set; }
         public DbSet<SupportReply> SupportReplies { get; set; }
+        public DbSet<Policy> Policies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

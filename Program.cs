@@ -108,6 +108,7 @@ builder.Services.AddScoped<IReadinessService, ReadinessService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<ISupportRequestService, SupportRequestService>();
+builder.Services.AddScoped<IPolicyService, PolicyService>();
 
 builder.Services.AddCors(options =>
 {
