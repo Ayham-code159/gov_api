@@ -18,6 +18,8 @@ namespace gov_API.Entities.Models
 
         public double ReadinessScore { get; set; }
 
+        public double MaturityScore { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? ApprovedAt { get; set; }
