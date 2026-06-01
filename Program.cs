@@ -107,6 +107,17 @@ builder.Services.AddScoped<IGovernmentEntityService, GovernmentEntityService>();
 builder.Services.AddScoped<IReadinessService, ReadinessService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Seed roles and default admin
